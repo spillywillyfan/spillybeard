@@ -1,0 +1,1 @@
+from .beard import embearden
