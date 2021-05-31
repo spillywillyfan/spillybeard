@@ -35,27 +35,33 @@ brew install cmake && pip install .
 
 ## Usage
 ```
-$ spillybeard embearden --help
+spillybeard embearden --help
 Usage: spillybeard embearden [OPTIONS] FILEPATH
 
   Slap a SpillyBeard on that mug.
 
 Options:
-  -o, --output PATH  A place to keep bearded pics of your friendos.
-  --help             Show this message and exit.
+  -o, --output PATH               A place to keep bearded pics of your
+                                  friendos.
+  -s, --style [real|mask|nomouth|mouth|derp]
+                                  Which beard style you want.
+  --help                          Show this message and exit.
 ```
 
 
 ```
-$ spillybeard before-and-after --help
+spillybeard before-and-after --help
 Usage: spillybeard before-and-after [OPTIONS] FILEPATH
 
   Show your pals their Spilly potential.
 
 Options:
-  -o, --output PATH          A place to keep bearded pics of your friendos.
-  --vertical / --horizontal  You want ontop-guy, or a side-dealio?
-  --help                     Show this message and exit.
+  -o, --output PATH               A place to keep bearded pics of your
+                                  friendos.
+  -s, --style [real|mask|nomouth|mouth|derp]
+                                  Which beard style you want.
+  --vertical / --horizontal       You want ontop-guy, or a side-dealio?
+  --help                          Show this message and exit.
 ```
 
 
@@ -77,6 +83,8 @@ Type "help", "copyright", "credits" or "license" for more information.
 ```
 
 ## Examples
-![harold](sample/output/harold_bearded.png)
 ![friendos](sample/output/friendos_bearded.png)
+![showcase1](sample/output/showcase1.png)
+![showcase2](sample/output/showcase2.png)
+![showcase3](sample/output/showcase3.png)
 
