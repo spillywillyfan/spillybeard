@@ -1,2 +1,1 @@
-include spillybeard/beards/*
-include spillybeard/beards/other/*
+include spillybeard/beards/*/*

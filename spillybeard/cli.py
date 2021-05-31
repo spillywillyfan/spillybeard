@@ -30,9 +30,19 @@ def entry_point(context):
     default=None,
     help="A place to keep bearded pics of your friendos.",
 )
-def embearden(filepath, output, before_and_after):
+@click.option(
+    "--style",
+    "-s",
+    type=click.Choice(["real", "mask", "nomouth", "mouth", "derp"]),
+    default="real",
+    help="Which beard style you want.",
+)
+def embearden(filepath, output, style):
     """ Slap a SpillyBeard on that mug. """
-    bearded_image = _beard.embearden(filepath)
+    bearded_image = _beard.embearden(filepath, style=style)
+    if bearded_image is None:
+        click.echo("Could not process this image!")
+        return
 
     if output is None:
         bearded_image.show()
@@ -52,13 +62,25 @@ def embearden(filepath, output, before_and_after):
     help="A place to keep bearded pics of your friendos.",
 )
 @click.option(
+    "--style",
+    "-s",
+    type=click.Choice(["real", "mask", "nomouth", "mouth", "derp"]),
+    default="real",
+    help="Which beard style you want.",
+)
+@click.option(
     "--vertical/--horizontal",
     default=True,
     help="You want ontop-guy, or a side-dealio?",
 )
-def before_and_after(filepath, output, vertical):
+def before_and_after(filepath, output, style, vertical):
     """ Show your pals their Spilly potential. """
-    bearded_image = _beard.make_before_and_after(filepath, vertical)
+    bearded_image = _beard.make_before_and_after(filepath, style, vertical)
+
+    if bearded_image is None:
+        click.echo("Could not process this image!")
+        return
+
     if output is None:
         bearded_image.show()
         return
