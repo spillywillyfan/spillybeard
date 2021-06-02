@@ -13,7 +13,7 @@ def read(filename):
 
 setuptools.setup(
     name="spillybeard",
-    version="0.0.1",
+    version="0.0.2",
     description="Add SpillyBeards to photos of cute frens.",
     long_description=read("README.md"),
     packages=setuptools.find_packages(),
