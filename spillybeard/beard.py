@@ -3,7 +3,7 @@ import math
 import os
 import face_recognition  # lol, of course python can do this
 
-from PIL import Image
+from PIL import Image, ImageOps
 from spillybeard.styles import STYLES as styles
 
 
@@ -21,6 +21,8 @@ def get_beard(stylename, beard_index=0):
     all_beards = sorted(glob.glob(os.path.join(beard_repository, "*.png")))
     this_friendos_unique_beard = all_beards[beard_index % len(all_beards)]
     beard = Image.open(this_friendos_unique_beard)
+    # Add a border for debugging:
+    # beard = ImageOps.expand(beard, border=(3, 3, 3, 3), fill="blue")
     return beard, style
 
 
@@ -34,7 +36,7 @@ def distance(point1, point2):
     return math.hypot(point1[0] - point2[0], point1[1] - point2[1])
 
 
-def angle(left, right):
+def get_angle(left, right):
     radians = math.atan2(right[1] - left[1], right[0] - left[0])
     return -1 * math.degrees(radians)
 
@@ -72,7 +74,8 @@ def embearden(filepath, style="real"):
         beard_width = int(distance(chin_left, chin_right) * 1.1)
         beard_height = int((beard_width / float(beard.width)) * beard.height)
         beard = beard.resize((beard_width, beard_height))
-        beard = beard.rotate(angle(chin_left, chin_right))
+        angle = get_angle(chin_left, chin_right)
+        beard = beard.rotate(angle, expand=True)
 
         # Center it around their pucker/chin
         center_points_list = [
@@ -82,10 +85,29 @@ def embearden(filepath, style="real"):
         center_points = [
             item for sublist in center_points_list for item in sublist]
         center = centroid(center_points)
-        attach_point = (
-            int(center[0] - beard.width / 2),
-            center[1] - int(beard_style["offset"] * beard.height),
-        )
+
+        # Center the beard after rotation
+        # After rotation, think about the large box that encompasses the
+        # original box of the beard
+        # Add a border for debugging to clarify:
+        # beard = ImageOps.expand(beard, border=(3, 3, 3, 3), fill="red")
+        startx = center[0]
+        starty = center[1]
+        if angle > 0:
+            starty -= int(math.sin(math.radians(angle)) * (beard_width))
+        if angle < 0:
+            startx += int(math.sin(math.radians(angle)) * (beard_width))
+
+        # Slide the beard half a width down the tilt
+        dx = int(math.cos(math.radians(angle)) * (beard_width / 2))
+        dy = int(math.sin(math.radians(angle)) * (beard_width / 2))
+
+        # Slide the beard offset * beard_length distance perpendicular tilt
+        offset = beard_height * beard_style["offset"]
+        offset_x = int(math.cos(math.radians(90 - angle)) * offset)
+        offset_y = int(math.sin(math.radians(90 - angle)) * offset)
+        attach_point = (startx - dx - offset_x), (starty + dy - offset_y)
+
         # Add it to the image
         pil_image.paste(beard, attach_point, beard)
     return pil_image

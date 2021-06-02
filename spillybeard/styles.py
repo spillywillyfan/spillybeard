@@ -10,13 +10,13 @@ STYLES = {
         "beard_dir": "mask",
     },
     "nomouth": {
-        "offset": 0,
-        "center": ["nose_tip"],
+        "offset": 0.18,
+        "center": ["chin"],
         "beard_dir": "nomouth",
     },
     "mouth": {
-        "offset": 0,
-        "center": ["nose_tip"],
+        "offset": 0.18,
+        "center": ["chin"],
         "beard_dir": "mouth",
     },
     "derp": {
