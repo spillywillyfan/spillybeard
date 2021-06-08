@@ -57,7 +57,12 @@ def embearden(filepath, style="real"):
     image = face_recognition.load_image_file(filepath)
 
     # Find all facial features in all the faces in the image
-    face_landmarks_list = face_recognition.face_landmarks(image)
+
+    locations = face_recognition.face_locations(
+        image, number_of_times_to_upsample=5)
+    face_landmarks_list = face_recognition.face_landmarks(
+        image, face_locations=locations
+    )
 
     # If you find more than 50 faces, assume something has gone wrong
     if not face_landmarks_list or len(face_landmarks_list) > 50:
